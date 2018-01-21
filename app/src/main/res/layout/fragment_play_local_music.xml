@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/control_pane_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_control_pane"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/play_or_pause_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="30dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_play"/>
+
+        <ImageView
+            android:id="@+id/skip_previous_image_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/play_or_pause_image_view"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_skip_previous"/>
+
+        <ImageView
+            android:id="@+id/skip_next_image_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/play_or_pause_image_view"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_skip_next"/>
+
+
+        <ImageView
+            android:id="@+id/play_mode_image_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_random"/>
+    </RelativeLayout>
+
+
+    <!--<View-->
+    <!--android:id="@+id/splitter"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:layout_above="@id/control_pane_layout"-->
+    <!--android:background="#10f2a1a1"/>-->
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_above="@id/control_pane_layout"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/music_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/seek_bar"
+        tools:listitem="@layout/item_music"/>
+
+</RelativeLayout>
