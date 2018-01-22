@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -178,8 +177,8 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
             mMediaPlayer.reset();
 
             // 设置资源并置 MediaPlayer 为准备状态
-            File file = new File(song.getFileUrl());
-            mMediaPlayer.setDataSource(file.getPath());
+//            File file = new File(song.getFileUrl());
+            mMediaPlayer.setDataSource(song.getFileUrl());
             mMediaPlayer.prepare();
 
             // 保存当前歌曲下标
@@ -188,7 +187,7 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
             // 标题栏显示歌名，子标题显示 专辑-歌手
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             activity.getSupportActionBar().setTitle(song.getTitle());
-            activity.getSupportActionBar().setSubtitle(song.getAlbum() + " - " + song.getSinger());
+            activity.getSupportActionBar().setSubtitle(song.getSinger() + " - " + song.getAlbum());
 
             // 播放音乐
             mMediaPlayer.start();
@@ -228,7 +227,7 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
                     mPlayOrPauseImageView.setImageResource(R.drawable.ic_play);
                     mMediaPlayer.pause();
                 } else {
-                    // 如果当前处于初始状态，没有播放歌曲，则根据播放模式来播放第一首哥
+                    // 如果当前处于初始状态，没有播放歌曲，则根据播放模式来播放第一首歌
                     if (songIndex == -1 && !mSongList.isEmpty()) {
                         if (playMode == PLAY_RANDOM)
                             songIndex = new Random().nextInt(mSongList.size());

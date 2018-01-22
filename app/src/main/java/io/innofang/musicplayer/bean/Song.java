@@ -97,7 +97,7 @@ public class Song {
     public String toString() {
         return  "文件名：" + fileName + '\n' +
                 "音乐名：" + title + '\n' +
-                "时长：" + (duration * 1.0 / 1000) + "s\n" +
+                "时长：" + ((duration / 1000) / 60) +" 分 "+ ((duration / 1000) % 60) + " 秒\n" +
                 "歌手：" + singer + '\n' +
                 "专辑：" + album + '\n' +
                 "年份：" + year + '\n' +
