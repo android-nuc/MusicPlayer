@@ -52,14 +52,6 @@
             android:src="@drawable/ic_random"/>
     </RelativeLayout>
 
-
-    <!--<View-->
-    <!--android:id="@+id/splitter"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="1dp"-->
-    <!--android:layout_above="@id/control_pane_layout"-->
-    <!--android:background="#10f2a1a1"/>-->
-
     <SeekBar
         android:id="@+id/seek_bar"
         android:layout_width="match_parent"

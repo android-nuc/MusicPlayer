@@ -32,7 +32,8 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="60dp"
             android:layout_toRightOf="@id/item_text_view"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/linearLayout">
 
             <TextView
                 android:id="@+id/music_name_text_view"
@@ -47,6 +48,8 @@
                 android:id="@+id/music_info_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/linearLayout"
+                android:layout_toEndOf="@+id/item_text_view"
                 android:lines="1"
                 tools:text="Don Diablo - Don't Let Go"/>
 

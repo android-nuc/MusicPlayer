@@ -56,9 +56,6 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
     // 歌曲在 mSongList 的下标
     private int songIndex = -1;
 
-    // 现在播放的歌曲
-    private Song mCurrentSong;
-
     // 播放模式选择，队列播放，单曲循环，随机播放
     private final int PLAY_QUEUE = R.drawable.ic_queue;
     private final int REPEAT_ONE = R.drawable.ic_repeat_one;
@@ -117,6 +114,7 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
                 new RequestPermissions.OnPermissionsRequestListener() {
                     @Override
                     public void onGranted() {
+                        // 同意权限后加载音乐列表并初始化事件
                         loadMusicList();
                         initEvent();
                     }
@@ -136,6 +134,7 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
             @Override
             public void run() {
                 final List<Song> songs = AudioUtils.getAllSongs(getContext());
+                // 不能在子线程更新 UI
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -175,10 +174,15 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
      */
     private void playMusic(Song song) {
         try {
+            // 重置 MediaPlayer 对象为刚刚创建的状态
             mMediaPlayer.reset();
+
+            // 设置资源并置 MediaPlayer 为准备状态
             File file = new File(song.getFileUrl());
             mMediaPlayer.setDataSource(file.getPath());
             mMediaPlayer.prepare();
+
+            // 保存当前歌曲下标
             songIndex = mSongList.indexOf(song);
 
             // 标题栏显示歌名，子标题显示 专辑-歌手
@@ -190,8 +194,8 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
             mMediaPlayer.start();
             // 一旦播放音乐就是显示停止图标
             mPlayOrPauseImageView.setImageResource(R.drawable.ic_pause);
-            // 设置当前播放音乐
-            mCurrentSong = song;
+
+            // 设置进度条持续时间
             mSeekBar.setMax(song.getDuration());
 
             // 更新进度条
@@ -208,12 +212,15 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
                 // 如果不是播放状态，那么无法点击
                 if (!mMediaPlayer.isPlaying()) return;
 
-                // 对播放的歌进行更新
+                // 对播放的歌进行越界检查并更新
                 if (songIndex == 0) songIndex = mSongList.size() - 1;
                 else songIndex--;
+
+                // 播放
                 playMusic(mSongList.get(songIndex));
                 break;
             case R.id.skip_next_image_view:
+                // 播放下一首歌曲
                 playNextSong();
                 break;
             case R.id.play_or_pause_image_view:
@@ -274,7 +281,7 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
                 }
             });
         } else if (playMode == PLAY_RANDOM) {
-            mMediaPlayer.setLooping(true);
+            mMediaPlayer.setLooping(false);
             mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
@@ -317,16 +324,30 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
         }
     };
 
+    /**
+     * 进度条改变时调用
+     * @param seekBar
+     * @param progress
+     * @param fromUser
+     */
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
     }
 
+    /**
+     * 开始滑动时调用
+     * @param seekBar
+     */
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
 
     }
 
+    /**
+     * 停止滑动时调用
+     * @param seekBar
+     */
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
@@ -336,7 +357,7 @@ public class PlayLocalMusicFragment extends Fragment implements View.OnClickList
             return;
         }
 
-        // 如果当前进度条已经到了末尾那么直接跳到下一首，并设置当前进度为0
+        // 如果当前进度条已经到了末尾那么直接跳到下一首，并设置当前进度为 0
         if (seekBar.getProgress() == seekBar.getMax()) {
             // 只要不是单曲循环那就播放下一首，否则重新播放
             if (playMode != REPEAT_ONE) {
